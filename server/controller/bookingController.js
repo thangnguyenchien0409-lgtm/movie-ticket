@@ -1,6 +1,7 @@
 import Booking from "../modals/Booking.js";
 import Show from "../modals/Show.js";
 import stripe from "stripe";
+import { inngest } from "../inngest/index.js";
 
 // Check seats
 const checkSeatsAvailability = async (showId, selectedSeats) => {
@@ -84,6 +85,14 @@ export const createBooking = async (req, res) => {
 
     booking.paymentLink = session.url;
     await booking.save();
+
+    // sau 10 phút hủy booking
+    await inngest.send({
+      name: "app/checkpayment",
+      data: {
+        bookingId: booking._id.toString(),
+      },
+    });
 
     res.json({
       success: true,

@@ -7,6 +7,7 @@ import isoTimeFormat from "../lib/isoTimeFormat";
 import { dateFormat } from "../lib/dateFormat";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -78,9 +79,12 @@ const MyBookings = () => {
                 {item.amount}
               </p>
               {!item.isPaid && (
-                <button className="bg-primary mb-3 min-w-[90px] cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium">
+                <Link
+                  to={item.paymentLink}
+                  className="bg-primary mb-3 min-w-[90px] cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium"
+                >
                   Pay Now
-                </button>
+                </Link>
               )}
             </div>
 
