@@ -2,7 +2,6 @@ import { Inngest } from "inngest";
 import User from "../modals/User.js";
 import Booking from "../modals/Booking.js";
 import Show from "../modals/Show.js";
-import { model } from "mongoose";
 import sendEmail from "../config/nodeMailer.js";
 
 // Create a client to send and receive events
@@ -94,6 +93,11 @@ const sendBookingConfirmationEmail = inngest.createFunction(
         },
       })
       .populate("user");
+
+    if (!booking || !booking.user.email) {
+      console.error("Booking or user not found:", bookingId);
+      return;
+    }
 
     await sendEmail({
       to: booking.user.email,
